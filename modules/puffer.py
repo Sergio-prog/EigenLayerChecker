@@ -20,7 +20,3 @@ class PufferChecker(BaseChecker):
 
         drop_amount = int(body[-1].get("amount", 0)) / 10 ** 18
         return round(drop_amount, 4)
-
-
-if __name__ == '__main__':
-    print(PufferChecker.fetch_drop_amount("0x176F3DAb24a159341c0509bB36B833E7fdd0a132"))

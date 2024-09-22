@@ -17,7 +17,3 @@ class EtherFiChecker(BaseChecker):
         print(body)
 
         return int(body["totalAllocation"]) / 10 ** 18
-
-
-if __name__ == '__main__':
-    print(EtherFiChecker.fetch_drop_amount("0x176f3dab24a159341c0509bb36b833e7fdd0a132"))

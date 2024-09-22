@@ -24,7 +24,3 @@ class RenzoChecker(BaseChecker):
                 drop_amount += int(event.get("awardAmount", 0))
 
             return round(drop_amount / 10 ** 18, 4)
-
-
-if __name__ == '__main__':
-    print(RenzoChecker.fetch_drop_amount("0x08C3806c2209e528AfA54fC9213A8FC9528b96d8"))
