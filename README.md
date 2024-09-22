@@ -29,3 +29,6 @@ pip install -r requirements.txt
 ```shell
 python main.py
 ```
+
+
+**https://t.me/there_is_no_meme**
