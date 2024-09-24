@@ -16,4 +16,4 @@ class EtherFiChecker(BaseChecker):
         body = response.json()
         print(body)
 
-        return int(body["totalAllocation"]) / 10 ** 18
+        return int(body["totalAllocation"]) / 10**18

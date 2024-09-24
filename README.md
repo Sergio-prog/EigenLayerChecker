@@ -30,5 +30,8 @@ pip install -r requirements.txt
 python main.py
 ```
 
+Также скрипт создает `result.html` файл, который содержит таблицу. Можно открыть в любом браузере.
+
+---
 
 **https://t.me/there_is_no_meme**

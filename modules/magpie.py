@@ -5,18 +5,21 @@ import config
 from modules import BaseChecker
 
 
-class PufferChecker(BaseChecker):
+class MagpieChecker(BaseChecker):
     @staticmethod
     def fetch_drop_amount(address: str, session: Session = None) -> float:
-        url = config.PUFFER_API.format(address=address)
+        url = config.MAGPIE_API.format(address=address)
+
         headers = {"User-Agent": config.FAKE_USER_AGENT}
         response = requests.get(url, headers=headers, allow_redirects=True)
         response.raise_for_status()
 
         body = response.json()
+        drop_amount = int(
+            body["data"]
+            .get("elStakeDropData", {})
+            .get("season2", {})
+            .get("eigenShare", 0)
+        )
 
-        if not body:
-            return 0
-
-        drop_amount = int(body[-1].get("amount", 0)) / 10**18
         return round(drop_amount, 4)

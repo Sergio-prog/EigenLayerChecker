@@ -6,7 +6,8 @@ PUFFER_API = "https://api.hedgey.finance/token-claims/{address}"
 KELP_API = "https://common.kelpdao.xyz/el-merkle/proofs/{address}"
 SWELL_API = "https://v3-lrt.svc.swellnetwork.io/swell.v3.WalletService/EigenlayerAirdrop?connect=v1&encoding=json&message=%7B%22walletAddress%22%3A%22{address}%22%7D"
 EL_API = "https://claims.eigenfoundation.org/clique-eigenlayer-api-v2/campaign/eigenlayer/credentials?walletAddress={address}"
-
+MAGPIE_API = "https://api.magpiexyz.io/eigenpie/stakingPointsSeason?account={address}"
+STAKESTONE_API = "https://claims.stakestone.io/clique-stakestone-api/airdrop/credentials?walletAddress={address}"
 
 FAKE_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
 FAKE_POSTMAN_USER_AGENT = "PostmanRuntime/7.42.0"

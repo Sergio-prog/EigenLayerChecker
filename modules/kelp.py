@@ -20,4 +20,4 @@ class KelpChecker(BaseChecker):
         body = response.json()
         drop_amount = int(body.get("data", {}).get("el", 0))
 
-        return round(drop_amount / 10 ** 18, 4)
+        return round(drop_amount / 10**18, 4)

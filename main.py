@@ -7,8 +7,10 @@ import config
 from modules import BaseChecker
 from modules.eigenlayer import EigenLayerChecker
 from modules.kelp import KelpChecker
+from modules.magpie import MagpieChecker
 from modules.puffer import PufferChecker
 from modules.renzo import RenzoChecker
+from modules.stakestone import StakestoneChecker
 from utils import fetch_wallets
 
 all_checkers: dict[str, Type[BaseChecker]] = {
@@ -16,6 +18,8 @@ all_checkers: dict[str, Type[BaseChecker]] = {
     "Renzo": RenzoChecker,
     "Puffer": PufferChecker,
     "Kelp": KelpChecker,
+    "Stakestone": StakestoneChecker,
+    "Magpie": MagpieChecker,
 }
 
 
@@ -45,11 +49,19 @@ def main():
     table = tabulate(formated_result, headers=table_headers, tablefmt="rounded_outline")
     if config.WRITE_TO_HTML:
         with open(f"{config.SAVE_FILE_NAME}.html", "w") as file:
-            html_table = tabulate(formated_result, headers=table_headers, tablefmt="html")
+            html_table = tabulate(
+                formated_result, headers=table_headers, tablefmt="html"
+            )
             file.write(html_table)
+
+    # TODO:
+    # if config.WRITE_TO_CSV:
+    #     with open(f"{config.SAVE_FILE_NAME}.csv") as file:
+    #         ...
 
     return table
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    print("Processing wallets...\n")
     print(main())

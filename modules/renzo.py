@@ -23,4 +23,4 @@ class RenzoChecker(BaseChecker):
             for event in events:
                 drop_amount += int(event.get("awardAmount", 0))
 
-            return round(drop_amount / 10 ** 18, 4)
+            return round(drop_amount / 10**18, 4)
