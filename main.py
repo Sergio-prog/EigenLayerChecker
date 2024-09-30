@@ -1,3 +1,6 @@
+import json
+import time
+from functools import reduce
 from typing import Type
 
 from requests import Session
@@ -12,6 +15,7 @@ from modules.puffer import PufferChecker
 from modules.renzo import RenzoChecker
 from modules.stakestone import StakestoneChecker
 from utils import fetch_wallets
+import csv
 
 all_checkers: dict[str, Type[BaseChecker]] = {
     "EigenLayer": EigenLayerChecker,
@@ -31,37 +35,57 @@ def get_all_drops_amount(address: str, session: Session = None) -> dict[str, flo
     return drop_amounts
 
 
-def main():
+def generate_table():
     wallets = fetch_wallets()
     result = {}
     session = Session()
 
     for wallet in wallets:
         result[wallet] = get_all_drops_amount(wallet, session)
+        time.sleep(0.1)
 
-    table_headers = ["Address", *all_checkers.keys()]
+    table_headers = ["N", "Address", *all_checkers.keys()]
+
+    total_allocation = 0
+    counter = 0
 
     def format_func(item):
-        return item[0], *item[1].values()
+        nonlocal counter, total_allocation
+        counter += 1
+        allocations: list[float] = item[1].values()
+        total_allocation += reduce(lambda a, b: a + b, allocations)
+
+        return counter, item[0], *allocations
 
     formated_result = list(map(format_func, result.items()))
 
     table = tabulate(formated_result, headers=table_headers, tablefmt="rounded_outline")
     if config.WRITE_TO_HTML:
         with open(f"{config.SAVE_FILE_NAME}.html", "w") as file:
-            html_table = tabulate(
-                formated_result, headers=table_headers, tablefmt="html"
-            )
+            html_table = tabulate(formated_result, headers=table_headers, tablefmt="html")
             file.write(html_table)
 
     # TODO:
-    # if config.WRITE_TO_CSV:
-    #     with open(f"{config.SAVE_FILE_NAME}.csv") as file:
-    #         ...
+    if config.WRITE_TO_CSV:
+        def format_csv_func(item):
+            allocations = dict(zip(all_checkers.keys(), item[2:]))
+            return {"N": item[0], "Address": item[1], **allocations}
 
-    return table
+        formated_csv_result = list(map(format_csv_func, formated_result))
 
+        with open(f"{config.SAVE_FILE_NAME}.csv", "w") as file:
+            csv_writer = csv.DictWriter(file, fieldnames=table_headers)
+            csv_writer.writeheader()
+            csv_writer.writerows(formated_csv_result)
+
+    return table, total_allocation
+
+
+def main():
+    print("Processing wallets...\n")
+    table, allocation = generate_table()
+    print(table)
+    print(f"\nTotal EIGEN allocation: {allocation}")
 
 if __name__ == "__main__":
-    print("Processing wallets...\n")
-    print(main())
+    main()
